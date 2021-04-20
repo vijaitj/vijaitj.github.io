@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html>
+<title>Vijai Jayadevan</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" type="text/css" href="styles.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<body>
+
+<!-- Navbar (sit on top) -->
+<div class="w3-top">
+  <div class="w3-bar w3-white w3-wide w3-padding w3-card">
+    <a href="#home" class="w3-bar-item w3-button">Vijai Jayadevan</a>
+    <!-- Float links to the right. Hide them on small screens -->
+    <div class="w3-right w3-hide-small">
+      <a href="#projects" class="w3-bar-item w3-button">Projects</a>
+      <a href="CV/Vijai_Jayadevan_Resume.pdf" class="w3-bar-item w3-button" target="_blank">Resume</a>
+      <a href="#contact" class="w3-bar-item w3-button">Contact</a>
+    </div>
+  </div>
+</div>
+
+<!-- Header -->
+<header class="w3-display-container w3-content w3-wide" style="max-width:1500px;" id="home">
+  <div class="w3-display-middle w3-margin-top w3-center">
+    <h1 class="w3-xxlarge w3-text-white"><span class="w3-padding w3-black w3-opacity-min"><b>Vijai</b></span> <span class="w3-hide-small w3-text-light-grey">Jayadevan</span></h1>
+  </div>
+</header>
+
+<!-- Page content -->
+<div class="w3-content w3-padding" style="max-width:1564px">
+  <!-- About Section -->
+  <div class="w3-container w3-padding-32" id="about">
+    <p style="padding-top: 35px;">Welcome! <br><br>
+		I'm a PhD candidate in Electrical and Computer Engineering (ECE) department at Purdue University, West Lafayette. I work under the guidance of <a href= "https://engineering.purdue.edu/~ace/" target="_blank">Prof. Edward Delp </a> and  <a href ="https://www.socsci.uci.edu/~zpizlo/" target="_blank">Prof. Zygmunt Pizlo</a>. Before joining the PhD program at Purdue, I obtained my master's (MS) degree in ECE from University of Arizona, Tucson and a bachelor's (B.Tech) degree in Electronics and Communication from Cochin University, India. Through this website, I intend to provide visitors with an introduction to my research work. Here, you can also find information on some of the earlier projects that I worked on. </p>
+		
+ <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">Research</h3>		
+		
+<p> The focus of my work is on understanding the role of priors in three-dimensional (3D) visual perception and in using this information to develop better computer vision algorithms. 3D vision is an ill-posed inverse problem. The formation of the 2D image of a 3D shape/scene is the forward problem, and inferring the 3D shape/scene from the image is the inverse problem. The ill-posedness is related to the fact that any given 2D image is consistent with infinitely many 3D interpretations (see <a href="http://shapebook.psych.purdue.edu/1.3/" target="_blank"> this</a> demo for an illustration of the ill-posedness). In order to produce a unique and ideally correct interpretation, one has to impose constraints (aka priors) on the family of possible interpretations. </p>
+      
+	  <blockquote>As far as I see, all a priori statements in physics have their origin in symmetry<br><p align="right"> - Hermann Weyl </p>
+      </blockquote>
+<p>
+	<a href="http://shapebook.psych.purdue.edu/2.1/Symmetry/" target="_blank">Symmetry</a>, <a href="http://shapebook.psych.purdue.edu/2.1/Planarity/" target="_blank"> planarity</a>, <a href="http://shapebook.psych.purdue.edu/2.1/Compactness/" target="_blank">compactness </a> etc., are some priors used by the visual system to deal with the ill-posedness of the problem. In my work, I attempt to better understand the role of these priors through psychophysical experiments. I'm also interested in finding ways to employ such priors to improve computer vision algorithms. Specifically, I explore the role of reflection symmetry in single image reconstruction and the role of translational symmetry in semantic labelling of 3D point clouds. A brief description of these projects (along with some demonstrations and links to the corresponding papers) are given below in <a href="#projects">projects</a> section.
+</p>
+  </div>	
+  	  
+      <!--   Project   Section   -->   
+	  <div   class="w3-container   "   id="projects">   
+		  <h3   class="w3-border-bottom   w3-border-light-grey   w3-padding-16">Projects</h3>   
+	  </div>   
+	  	 
+	  
+	  <!--***********************************************************************   Proj:   Psychophysics  *****************************************************************-->   
+<div class="w3-row w3-margin">
+	<div class="w3-quarter">
+		<img src="images/psychophysics.gif" style="width:100%;min-height:200px;margin-top:97px" alt="A sample shape from the psychophysics experiment">
+	</div>
+	<div class="w3-threequarter w3-panel">
+		<h3>
+			Psychophysics to Study the Priors Employed by the Visual System
+		</h3>
+		<p style="text-align: justify">
+			<a href="https://jov.arvojournals.org/article.aspx?articleid=2191781" target="_blank">Prior studies</a> have found that, the perception of symmetric abstract polyhedral shapes, can be well modeled using priors likesymmetry compactness and binocular depth order information. Through this study, we show that these priors can be used to model asymmetrical shapes obtained from affine distortions of symmetric shapes. In this study, stimuli were generated using the game engine Unity (known commonly as Unity3D). To display the stimuli, we used Oculus Rift, a virtual reality (VR) head-mounted display. The experiment shows that the perception of symmetrical shapes is closer to veridical in comparison to asymmetrical shapes. Metrics to measure asymmetry of abstract polyhedral shapes and to measure shape dissimilarity between two polyhedral shapes are introduced. A control experiment which proves the goodness of the model is also presented. Click on the "Results" link below to see all the shapes used in the experiment, along with the user reconstructed shapes and the model. The links to an online version of the experiment and demo of the three parameter family are also provided below. In the the 3-parameter family demo, after modifying the shape (using the three parameters), go back to the original view (i.e., click on original view and then play/pause) to see the priors employed by your own visual system in action.
+		</p>
+		<div class="w3-row">
+			<h6>
+				Links
+			</h6>
+		</div>
+		<div class="w3-row">
+			<form action="https://www.mdpi.com/2073-8994/10/8/344/htm" method="get" target="_blank" class="w3-col bottom-links" style="width:90px">
+				<button class="button"><span>Paper</span></button>
+			</form>
+			<form action="https://lorenz.ecn.purdue.edu/~vthottat/shapeexp/chooseshp.php" method="get" target="_blank" class="w3-col bottom-links" style="width:100px">
+				<button class="button"><span>Results</span></button>
+			</form>
+			<form action="https://web.ics.purdue.edu/~vthottat/three_pf/view_3pf.html" method="get" target="_blank" class="w3-col bottom-links" style="width:185px">
+				<button class="button"><span>3-Parameter family</span></button>
+			</form>
+			<form action="https://web.ics.purdue.edu/~vthottat/three_pf/view_exp.html" method="get" target="_blank" class="w3-col bottom-links" style="width:130px">
+				<button class="button"><span>Experiment</span></button>
+			</form>
+			<!--<form action="https://github.com/vijaitj/ShapeExperiment" method="get" target="_blank" class="w3-rest bottom-links">
+				<button class="button"><span>Code </span></button>
+			</form>-->
+		</div>
+		<div>
+			<h6>
+				TAGS
+			</h6><span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">3D Visual Perception</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Psychophysics</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Symmetry</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Priors</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Virtual Reality</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Oculus</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">C#</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Unity</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Three.js</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Monocular</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Binocular</span>
+		</div>
+	</div>
+</div>
+
+     <!--***********************************************   Proj:   Semantic Labelling of Point Clouds  and Skeleton Extraction ******************************************-->   
+	  
+	  <div class="w3-row w3-margin w3-border-top w3-padding-16">
+	  	<div class="w3-quarter">
+	  		<!--<img src="images/reg_demo.gif" style="width:75%;min-height:200px;margin-top:97px" alt="Point set Registration"> -->
+			<div class="w3-row">
+				<div>
+					<img class="w3-padding-16 w3-border" src="skel/images/hand/parts_colored/animated.gif" style="width:100%;min-height:200px;clear:both" alt="Shoft shadow rendering demo1">
+					<img class="w3-padding-16 w3-border" src="images/reg_demo.gif" style="width:100%;min-height:200px;clear:both" alt="Shoft shadow rendering demo1">
+				</div>
+			</div>
+	  	</div>
+	  	<div class="w3-threequarter w3-panel">
+	  		<h3>
+	  			Decomposing a Point Cloud
+	  		</h3>
+	  		<p style="text-align: justify">
+	  			Decomposing a point cloud into its components and extracting curve skeletons from point clouds are two related problems. Decomposition of a shape into its components is often obtained as a byproduct of skeleton extraction. In this work, we propose to extract curve skeletons, from unorganized point clouds, by decomposing the object into its parts, identifying part skeletons and then linking these part skeletons together to obtain the complete skeleton. We believe it is the most natural way to extract skeletons in the sense that this would be the way a human would approach the problem. Our parts are generalized cylinders (GCs). Since, the axis of a GC is an integral part of its definition, the parts have natural skeletal representations. We use translational symmetry, the fundamental property of GCs, to extract parts from point clouds. We demonstrate how this method can handle a large variety of shapes. We compare our method with state of the art methods and show how a part based approach can deal with some of the limitations of other methods. We present an improved version of an existing point set registration algorithm and demonstrate its utility in extracting parts from point clouds. We also show how this method can be used to extract skeletons from and identify parts of noisy point clouds. A part based approach also provides a natural and intuitive interface for user interaction. We demonstrate the ease with which mistakes, if any, can be fixed with minimal user interaction with the help of a graphical user interface.
+	  		</p>
+	  		<div class="w3-row">
+	  			<h6>
+	  				Links
+	  			</h6>
+	  		</div>
+	  		<div class="w3-row">
+	  			<form action="https://arxiv.org/abs/1912.11932" method="get" target="_blank" class="w3-col bottom-links" style="width:90px">
+	  				<button class="button"><span>Paper</span></button>
+	  			</form>
+	  			<form action="https://web.ics.purdue.edu/~vthottat/skel" method="get" target="_blank" class="w3-col bottom-links" style="width:100px">
+	  				<button class="button"><span>Results</span></button>
+	  			</form>
+	  		</div>
+	  		<div>
+	  			<h6>
+	  				TAGS
+	  			</h6><span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Curve Skeleton</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Point Cloud Decomposition</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Point Set Registration</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Translational Symmetry</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Generalized Cylinders</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Expectation Maximization</span>
+	  		</div>
+	  	</div>
+	  </div>
+
+    <!--   ********************************************************************** Proj: Single Image Recovery **********************************************************    -->
+<div class="w3-row w3-margin w3-border-top w3-padding-16">
+	<div class="w3-quarter">
+		<div class="w3-row">
+			<div class="w3-half w3-border">
+				<img src="images/chair_o.png" style="width:100%;min-height:200px;clear:both" alt="Shoft shadow rendering demo1">
+				<img src="images/arrow_icon.png" style="display: block;margin-left: auto;margin-right: auto" alt="Shoft shadow rendering demo1">
+				<img src="images/chair.gif" style="width:100%;min-height:200px;clear:both" alt="Shoft shadow rendering demo1">
+			</div>
+			<div class="w3-half w3-border">
+				<img src="images/stand_o.png" style="width:100%;min-height:200px;clear:both" alt="Shoft shadow rendering demo1">
+				<img src="images/arrow_icon.png" style="display: block;margin-left: auto;margin-right: auto" alt="Shoft shadow rendering demo1">
+				<img src="images/stand.gif" style="width:100%;min-height:200px;clear:both" alt="Shoft shadow rendering demo1">
+			</div>
+		</div>
+		<div class="w3-row">
+			<div class="w3-half w3-border">
+				<img src="images/BookShelf_o.png" style="width:100%;min-height:200px;clear:both" alt="Shoft shadow rendering demo1">
+				<img src="images/arrow_icon.png" style="display: block;margin-left: auto;margin-right: auto" alt="Shoft shadow rendering demo1">
+				<img src="images/BookShelf.gif" style="width:100%;min-height:200px;clear:both" alt="Shoft shadow rendering demo1">
+			</div>
+			<div class="w3-half w3-border">
+				<img src="images/ladder_o.png" style="width:100%;min-height:200px;clear:both" alt="Shoft shadow rendering demo1">
+				<img src="images/arrow_icon.png" style="display: block;margin-left: auto;margin-right: auto" alt="Shoft shadow rendering demo1">
+				<img src="images/ladder.gif" style="width:100%;min-height:200px;clear:both" alt="Shoft shadow rendering demo1">
+			</div>
+		</div>
+	</div>
+	<div class="w3-threequarter w3-panel">
+		<h3>
+			3D Shape Reconstruction from a Single Image
+		</h3>
+		<p style="text-align: justify">
+			3D shape recovery from a single camera image is an illposed inverse problem which must be solved by using a priori
+			constraints (a.k.a priors). We use symmetry and planarity constraints to recover 3D shapes from a single view. In many ways,
+			symmetry and planarity represent the simplicity of a 3D object,
+			and by applying these constraints we attempt to reconstruct a simple 3D shape that can explain the 2D image. Once we assume that
+			the object to be reconstructed is symmetric, all that is left to do is:
+			(i) estimate the plane of symmetry, and (ii) establish the symmetry
+			correspondence between the various parts of the object. The edge
+			map of the image of an object serves as a representation of its
+			2D shape; establishing symmetry correspondence means identifying pairs of symmetric curves in the edge map. In this work, it is
+			assumed that the vanishing point, which establishes the symmetry
+			plane up to a scale factor, is known. In addition, it is also assume that the focal length and the direction of gravity are known.
+			Long smooth curves are extracted from the edge map by solving the shortest (least-cost) path problem, where the cost function penalizes large interpolations and large turning angles. Optimal curve matches are then found that minimize the number of planes required to approximate the final 3D reconstruction. This optimization problem is framed as a binary integer program and solved using the <a href="https://www.gurobi.com/" target="_blank">Gurobi</a> solver.
+		</p>
+		<div class="w3-row">
+			<h6>
+				Links
+			</h6>
+			<p style="margin-top: 5px"></p>
+		</div>
+		<div class="w3-row">
+			<form action="https://www.ingentaconnect.com/contentone/ist/ei/2017/00002017/00000017/art00018" method="get" target="_blank">
+				<button class="button"><span>Paper</span></button>
+			</form>
+		</div>
+		<div class="w3-row">
+			<h6>
+				TAGS
+			</h6>
+		</div>
+		<div class="w3-row">
+			<span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Symmetry</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Planarity</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Priors</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">3D Shape</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Inverse Problem</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Vanishing Point</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Python</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Curve Matching</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Integer Program</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Gurobi</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Shortest Paths</span>
+		</div>
+	</div>
+</div>
+	
+  <!--   **************************************************************************** Proj: Solar Power  ****************************************************************************    -->
+<div class="w3-row w3-margin w3-border-top w3-padding-16">
+	<div class="w3-quarter">
+		<img src="images/5_min_ahead_predict.png" style="width:100%;min-height:200px;margin-top: 108px;" alt="Power Forecast">
+	</div>
+	<div class="w3-half w3-panel">
+		<h3>
+			Forecasting Solar Power Intermittency using Ground-based Sky Imaging
+		</h3>
+		<p style="text-align: justify" >
+			Solar power utilization at the utility-scale is one of the grand challenges identified
+			by the National Science Foundation. The intermittent output of solar power
+			plants due to passing clouds and nighttime is a major problem. Intermittency
+			limits the adoption of solar power by utility companies and industry because they
+			require reliable, predictable power generation. Methods used to counter the problem
+			of intermittency, such as interconnecting geographically dispersed photovoltaic
+			(PV) systems, using dispatchable spinning reserves, energy storage and smart grids
+			require accurate forecasting of PV power output for safe and efficient operation.
+			For instance, utility operators require a ten-minute warning to bring spinning reserves
+			online. Forecasting at multiple timescales is valuable for utility operators
+			and plant owners. Day-ahead forecasts are needed to better determine pricing in
+			the energy market. Hour-ahead and shorter time-scale forecasts are valuable for
+			electric grid operators to schedule spinning reserves. Image analysis algorithms
+			applied to images acquired using ground-based sky imaging (GBSI) systems have
+			shown promise in making intra-hour power forecasts, but typically have limited
+			reliability. This thesis developed novel image analysis techniques to produce
+			reliable intra-hour power forecasts. A GBSI system was set up at the Tucson Electric Power solar power test yard, which unlike most other such systems tracks the sun. The various modules involved in producing a power forecast, namely, cloud detection, motion estimation and cloud advection, were dvevloped. A new feature for enhancing the contrast between cloud and sky to aid cloud detection is proposed. A novel conditional random field based method, which attains a very high accuracy for cloud detection, was develped. The utility of using the GBSI set up for dealing with intermittency was demonstrated by the results for the prediction of solar power output.
+		</p>
+		<div class="w3-row">
+			<h6>
+				Links
+			</h6>
+			<p style="margin-top: 5px"></p>
+		</div>
+		<div class="w3-row">
+			<form action="Thesis/Vijai_Thesis.pdf" method="get" target="_blank" class="w3-col bottom-links" style="width:90px">
+				<button class="button"><span>Thesis</span></button>
+			</form>
+			<form action="https://journals.ametsoc.org/doi/full/10.1175/JTECH-D-14-00053.1" method="get" target="_blank" class="w3-col bottom-links" style="width:185px">
+				<button class="button"><span>Segmentation Paper</span></button>
+			</form>
+			<form action="https://arizona.pure.elsevier.com/en/publications/forecasting-solar-power-intermittency-using-ground-based-cloud-im" method="get" target="_blank" class="w3-col bottom-links" style="width:130px">
+				<button class="button"><span>WREF Paper</span></button>
+			</form>
+			<form action="https://arxiv.org/abs/1906.07383" method="get" target="_blank" class="w3-rest bottom-links">
+				<button class="button"><span>CRF Paper</span></button>
+			</form>
+		</div>
+		<div class="w3-row">
+			<h6>
+				TAGS
+			</h6>
+		</div>
+		<div class="w3-row">
+			<span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Solar Power</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Sun Tracking</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Image Segmentation</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">MATLAB</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Conditional Random Field</span><span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Color Spaces</span>
+		</div>
+	</div>
+	<div class="w3-quarter">
+		<img src="images/advect.png" style="width:100%;min-height:200px;clear:both;margin-top: 108px;" alt="Advection Initial Cloud Map">
+		<!-- <img src="images/advect_2.png" style="width:100%;min-height:200px;clear:both" alt="Actual Cloud Map">
+		<img src="images/advect_3.png" style="width:100%;min-height:200px;clear:both" alt="Predicted Cloud Map"> -->
+	</div>
+</div>
+
+  
+    <!--   **************************************************************************** Proj: SoftShadows  ****************************************************************************    -->
+<div class="w3-row w3-margin w3-border-top w3-padding-16">
+	<div class="w3-quarter">
+		<img src="images/shrink_terrain.gif" style="width:100%;min-height:200px" alt="Shoft shadow rendering demo1">
+	</div>
+	<div class="w3-half w3-panel">
+		<h3>
+			Efficient Soft Shadow Rendering
+		</h3>
+		<p style="text-align: justify">
+			As part of the coursework in the <a href="https://www.cs.purdue.edu/cgvlab/courses/434/434Spring2016/" target="_blank">Computer Graphics course</a> , the paper, <a href="https://www.cs.purdue.edu/cgvlab/papers/popescu/popescuGEARSCGF2014.pdf" target="_blank">GEARS: A General and Efficient Algorithm for Rendering Shadows</a>, was implemented. The entire rendering pipeline was implemented from scratch in C++. The images to be rendered are created as instances of a framebuffer object (which inherit from <a href="https://doc.qt.io/qt-5/qwidget.html" target="_blank">Qwidget</a> object). The animation on the left shows the transformation of soft shadows into hard shadows as the light source shrinks to a point and the one on the right shows the movement of the soft shadows corresponding to the motion of the light source.
+		</p>
+		<!-- <div class="w3-row">
+			<h6>
+				Links
+			</h6>
+			<p style="margin-top: 5px"></p>
+		</div>
+		<div class="w3-row">
+			<form action="https://github.com/vijaitj/ProjectSoftShadow" method="get" target="_blank">
+				<button class="button"><span>Code</span></button>
+			</form>
+		</div> -->
+		<div class="w3-row">
+			<h6>
+				TAGS
+			</h6>
+		</div>
+		<div class="w3-row">
+			<span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Computer Graphics</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Soft Shadows</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Rendering Pipeline</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">C++</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Qt</span>
+		</div>
+	</div>
+	<div class="w3-quarter">
+		<img src="images/move_terrain.gif" style="width:100%;min-height:200px" alt="Shoft shadow rendering demo2">
+	</div>
+</div>
+
+  <!--   *********************************************************************** End Projects Section ****************************************************************************    -->
+  <!-- Contact Section -->
+  <div class="w3-container w3-padding-32" id="contact">
+    <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">Contact</h3>
+    <p>To get in touch, please email me or send me a message on LinkedIn. For more ways to reach me, please refer to my <a href="CV/Vijai_Jayadevan_Resume.pdf" target="_blank">Resume</a>.</p>
+	<div class="w3-row">Email: vijai dot tj at gmail dot com </div>
+	<div class="w3-row">LinkedIn: <a href="https://www.linkedin.com/in/vijaitj/" target ="_blank">https://www.linkedin.com/in/vijaitj</a></div>
+  </div>
+<!-- End page content -->
+</div>
+
+
+<!-- Footer
+<footer class="w3-center w3-black w3-padding-16">
+</footer> -->
+
+</body>
+</html>
