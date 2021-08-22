@@ -1,0 +1,581 @@
+<!DOCTYPE  html> <html  lang="en"> 
+<head>  
+	<title>Three  Parameter Family</title>  
+	<meta  charset="utf-8"> <meta  name="viewport" content="width=device-width,  user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"> 
+	<style> 
+		body { 
+			margin: 0px; 
+			background-color: #000000; 
+			overflow: hidden; 
+		}
+		.dg input{
+			display:none;
+		}
+		#canvas{
+		float:left;
+		}
+		#info{
+			position: absolute;
+			top: 20px;
+			width: 75%;
+		    text-align: left;
+		    padding-left: 3%;
+			color: rgb(255, 255, 255);
+			background-color: transparent;
+			z-index: 1;
+		    font-size: 14px;
+		    font-family: Trebuchet MS;
+		}
+		</style> 
+	</head> 
+	<body>
+		<script src="js/three.min.js"></script>
+		<script type="text/javascript" src="js/dat.gui.min.js"></script>
+		<div id="info">
+			<ul>
+				<li>
+					The three sliders on the right can be adjusted to view the different memebers of the three-parameter family of shapes.
+				</li>
+				<li>
+					Click on the <span style="color: #ff0000">Generate New</span> button to generate a new shape.
+				</li>
+				<li>
+					Use the <span style="color: #ff0000">Play/Pause</span> button to resume and stop the rotation of the shape.
+				</li>
+				<li>
+					Use the <span style="color: #ff0000">Reset Parameters</span> button to undo the changes made to the sliders.
+				</li>
+				<li>
+					Click on the <span style="color: #ff0000">Original View</span> button and then on <span style="color: #ff0000">Play/Pause</span> button to verify that, from the original view, the modified shape looks the same as the initial shape.
+				</li>
+			</ul>
+			
+		</div>
+		<div id="canvas"></div>
+		
+		<script>
+			
+			container = document.getElementById( 'canvas' );
+			//document.body.appendChild( container );
+			
+			var verts = new Array(16);
+			var faces = new Array(28);
+			var sym = new THREE.Vector4(1, 0, 0, 0);
+			var camera, scene, renderer;
+			var mother_obj, mesh;
+			var edg_scl = 1.1;
+			//var hlt = false;
+			
+			// GUI
+			var options = {
+				m1: 0.0,
+				m2: 0.0,
+				m3: 1.0,
+				reset: function() { reset_gui() },
+				newobj: function() { generate_verts(); reset_gui() },
+				halt: function(){ play_pause() },
+				original: function() { orig_view()}
+			};
+			
+			function reset_gui(){
+				options.m1 = 0.0;
+				options.m2 = 0.0;
+				options.m3 = 1.0;
+				options.hlt = false;
+				update_geom();
+			}
+			function play_pause(){
+				if(!options.hlt){
+					options.hlt = true;
+				}
+				else{
+					options.hlt = false;
+				}
+			}
+			function orig_view() {
+				mother_obj.rotation.set(0,0,0);
+				mother_obj.updateMatrix();
+				options.hlt = true;
+			}
+			
+			var gui = new dat.GUI();
+			gui.add(options, 'newobj').name('Generate New');
+			gui.add(options, 'halt').name('Play/Pause');
+			
+			var paramz = gui.addFolder('Parameters');
+			paramz.add(options, 'm1', -3.2, 3.2).name('P1').listen();
+			paramz.add(options, 'm2', -3.2, 3.2).name('P2').listen();
+			paramz.add(options, 'm3', 0.1, 3.2).name('P3').listen();
+			paramz.open();
+			
+			gui.add(options, 'reset').name('Reset Parameters');
+			gui.add(options, 'original').name('Original View');
+			
+			
+			function r( a,  b)
+			{
+				var max = Number.MAX_SAFE_INTEGER;
+				// Swap a and b
+				if (b < a) 
+				{ 
+					temp = a; 
+					a = b; 
+					b = temp; 
+				} 
+				return a + (Math.random() * (max)) % (b - a); 
+			}
+			function generate_verts()
+			{
+				/*
+				*    0 -- 1 -- 2 -- 3            // edge to base-plane orthogonal to sym
+				*    |    |    |    |            // 3 faces on side of object
+				*    4 -- 5 -- 6 -- 7            // edge to 3 faces on top of object
+				*/
+
+				while (true)
+				{
+					// The first quad (becomes vertices 0-3)
+					var p1 = new THREE.Vector3(0,0,0);
+					var p4 = new THREE.Vector3(0,0,0);
+					var p5 = new THREE.Vector3(0,0,0);
+					var p6 = new THREE.Vector3(0,0,0);
+
+					p1.x = r(-110, -10); p1.y = r(0, 100); p1.z = r(-150, -50);
+					p4.x = r(-110, -10); p4.y = r(-210, -110); p4.z = r(-150, -50);
+					p6.x = r(-110, -10); p6.y = r(0, 100); p6.z = r(-40, 60);
+
+					var a2n = new THREE.Vector3(p4.x,p4.y,p4.z);
+					a2n.addScaledVector(p1,-1)
+					var t = new THREE.Vector3(p6.x,p6.y,p6.z); 
+					t.addScaledVector(p1,-1);
+					a2n.cross(t);
+					var a2Width = -a2n.dot(p1);
+					var a2 = new THREE.Vector4(a2n.x, a2n.y, a2n.z, a2Width);
+
+					p5.y = p4.y;
+					p5.z = r(-40, 60);
+					p5.x = -(a2.w + a2.y * p5.y + a2.z * p5.z) / a2.x;
+
+					// Need to check the reflection.
+					var reflectionNormals = new THREE.Vector3(sym.x, sym.y, sym.z);
+
+					//THREE.Vector3 v33 = new THREE.Vector3(0,1,0);
+					//THREE.Vector3 pnt1 = new THREE.Vector3(-1,1,-1);
+					//THREE.Vector3 p22 = THREE.Vector3.reflect (pnt1, v33);
+					//Debug.Log (p22);
+					var p2 = new THREE.Vector3(p1.x,p1.y,p1.z);
+					var p3 = new THREE.Vector3(p4.x,p4.y,p4.z);
+					var p7 = new THREE.Vector3(p6.x,p6.y,p6.z);
+					var p8 = new THREE.Vector3(p5.x,p5.y,p5.z);
+					p2.reflect(reflectionNormals);
+					p3.reflect(reflectionNormals);
+					p7.reflect(reflectionNormals);
+					p8.reflect(reflectionNormals);
+
+					// FATAL CHECK IMPLEMENTATION NEEDS TO GO HERE.
+
+					// Sanity checks on the roughness of the shape
+					if (p4.y > p1.y) continue;
+					if (p1.x > p2.x) continue;
+					if (p4.x > p3.x) continue;
+					if (p5.y > p6.y) continue;
+					if (p5.z < p4.z) continue;
+					if (p6.x > p7.x) continue;
+					if (p5.x > p8.x) continue;
+					if (p7.z < p2.z) continue;
+					if (p8.z < p3.z) continue;
+					if (p5.x > 400 || p5.x < -400) continue;
+			
+					var p9 = new THREE.Vector3(0,0,0);
+					var p10 = new THREE.Vector3(0,0,0);
+					var p13 = new THREE.Vector3(0,0,0);
+					var p14 = new THREE.Vector3(0,0,0);
+
+					p9.x = r(-210, -110);
+					p9.y = p5.y;
+					p9.z = r(60, 160);
+
+					var a7n = new THREE.Vector3(p6.x,p6.y,p6.z);
+					a7n.addScaledVector(p5,-1);
+					t = new THREE.Vector3(p9.x,p9.y,p9.z);
+					t.addScaledVector(p5,-1)
+					a7n.cross(t);
+					var a7Width = -a7n.dot(p5);
+					var a7 = new THREE.Vector4(a7n.x, a7n.y, a7n.z, a7Width);
+
+					p10.x = r(-210, -110);
+					p10.y = r(110, 210);
+					p10.z = -(a7.w + a7.y * p10.y + a7.x * p10.x) / a7.z;
+
+					p14.x = r(-210, -110);
+					p14.y = r(110, 210);
+					p14.z = r(200, 300);
+
+					var a11n = new THREE.Vector3(p14.x,p14.y,p14.z);
+					a11n.addScaledVector(p10,-1);
+					var t = new THREE.Vector3(p9.x,p9.y,p9.z);
+					t.addScaledVector(p10,-1);
+					a11n.cross(t);
+					var a11Width = -a11n.dot(p10);
+					var a11 = new THREE.Vector4(a11n.x, a11n.y, a11n.z, a11Width);
+
+					p13.z = r(300, 400);
+					p13.y = p9.y;
+					p13.x = -(a11.w + a11.y * p13.y + a11.z * p13.z) / a11.x;
+					var p11 = new THREE.Vector3(p10.x,p10.y,p10.z);
+					var p12 = new THREE.Vector3(p9.x,p9.y,p9.z);
+					var p15 = new THREE.Vector3(p14.x,p14.y,p14.z);
+					var p16 = new THREE.Vector3(p13.x,p13.y,p13.z);
+					p11.reflect(reflectionNormals);
+					p12.reflect(reflectionNormals);
+					p15.reflect(reflectionNormals);
+					p16.reflect(reflectionNormals);
+
+					if (p9.y > p10.y) continue;
+					if (p10.x > p11.x) continue;
+					if (p9.x > p12.x) continue;
+					if (p13.y > p14.y) continue;
+					if (p13.z < p9.z) continue;
+					if (p14.x > p15.x) continue;
+					if (p13.x > p16.x) continue;
+					if (p15.z < p11.z) continue;
+					if (p16.z < p12.z) continue;
+					if (p10.z > 400 || p10.z < -400) continue;
+					if (p13.x > 400 || p13.x < -400) continue;
+
+					if (p5.x < p9.x) continue;
+
+					// We've got a good object
+					/*
+					*    0 -- 1 -- 2 -- 3          // edge to base-plane orthogonal to sym
+					*    |    |    |    |          // 3 faces on side of object
+					*    4 -- 5 -- 6 -- 7          // edge to 3 faces on top of object
+					*/
+
+					var pos = 0;
+
+					verts[pos++] = new THREE.Vector3(p4.x, p4.y, p4.z);
+					verts[pos++] = new THREE.Vector3(p5.x, p5.y, p5.z);
+					verts[pos++] = new THREE.Vector3(p9.x, p9.y, p9.z);
+					verts[pos++] = new THREE.Vector3(p13.x, p13.y, p13.z);
+					verts[pos++] = new THREE.Vector3(p1.x, p1.y, p1.z);
+					verts[pos++] = new THREE.Vector3(p6.x, p6.y, p6.z);
+					verts[pos++] = new THREE.Vector3(p10.x, p10.y, p10.z);
+					verts[pos++] = new THREE.Vector3(p14.x, p14.y, p14.z);
+					// Get the other half
+					for (i = 8; i < 16; i++) { 
+						verts[i] = new THREE.Vector3(-verts[i-8].x, verts[i-8].y, verts[i-8].z)
+					}
+					make_upright(verts);
+					break;
+				}
+			}
+			function make_upright(nw_vrtz){
+				// var m = new THREE.Matrix4();
+				// m.makeRotationX(3.14*Math.random())
+				var ax = new THREE.Vector3(1,0,0);
+				var mx = 0.75*Math.PI;
+				var mn = 0.4*Math.PI;
+				var angx = mn + Math.random()*(mx - mn);
+				var ay = new THREE.Vector3(0,1,0);
+				mx = 0.35*Math.PI;
+				mn = 0.15*Math.PI;
+				var angy = mn + Math.random()*(mx - mn);
+				var az = new THREE.Vector3(0,0,1);
+				mx = 0.35*Math.PI;
+				mn = 0.15*Math.PI;
+				var angz = mn + Math.random()*(mx - mn);
+				if(Math.random() > 0.5){
+					angy *= -1;
+					angz *= -1;
+				}	
+				for (i = 0; i < 16; i++) { 			
+					nw_vrtz[i].applyAxisAngle(ax,angx);
+					nw_vrtz[i].applyAxisAngle(ay,angy);
+					nw_vrtz[i].applyAxisAngle(az,angz);
+				}		
+			}
+			function initialize_faces()
+			{
+				var pos = 0;
+				// Faces on the side 0-5: 0---1---2---3
+				//                        |   |   |   |
+				//                        4---5---6---7
+				faces[pos++] = new THREE.Face3(0, 1, 4);
+				faces[pos++] = new THREE.Face3(1, 5, 4);
+				faces[pos++] = new THREE.Face3(1, 2, 5);
+				faces[pos++] = new THREE.Face3(2, 6, 5);
+				faces[pos++] = new THREE.Face3(2, 3, 6);
+				faces[pos++] = new THREE.Face3(3, 7, 6);
+
+				// Reflected faces:  8---9--10--11
+				//                   |   |   |   |
+				//                  12--13--14--15
+				faces[pos++] = new THREE.Face3(12, 9, 8);
+				faces[pos++] = new THREE.Face3(13, 9, 12);
+				faces[pos++] = new THREE.Face3(13, 10, 9);
+				faces[pos++] = new THREE.Face3(14, 10, 13);
+				faces[pos++] = new THREE.Face3(14, 11, 10);
+				faces[pos++] = new THREE.Face3(15, 11, 14);
+				//old, wrong direction
+				//        for(uint i = 0; i < 6; ++i)
+				//            faces[pos++] = faces[i] + Point3(8, 8, 8);
+
+				// Faces on the base 12-17: 0--1---2---3
+				//                          |  |   |   |
+				//                          8--9--10--11
+				faces[pos++] = new THREE.Face3(8, 1, 0);
+				faces[pos++] = new THREE.Face3(9, 1, 8);
+				faces[pos++] = new THREE.Face3(9, 2, 1);
+				faces[pos++] = new THREE.Face3(10, 2, 9);
+				faces[pos++] = new THREE.Face3(10, 3, 2);
+				faces[pos++] = new THREE.Face3(11, 3, 10);
+
+				// Faces on the top 18-23:  4---5---6---7
+				//                          |   |   |   |
+				//                         12--13--14--15
+				//for(uint i = 0; i < 6; ++i)
+				faces[pos++] = new THREE.Face3(4, 5, 12);
+				faces[pos++] = new THREE.Face3(5, 13, 12);
+				faces[pos++] = new THREE.Face3(5, 6, 13);
+				faces[pos++] = new THREE.Face3(6, 14, 13);
+				faces[pos++] = new THREE.Face3(6, 7, 14);
+				faces[pos++] = new THREE.Face3(7, 15, 14);
+
+				// Faces on the top-quad: 0 -- 8
+				//                        |    |
+				//                        4 --12
+				faces[pos++] = new THREE.Face3(4, 8, 0);
+				faces[pos++] = new THREE.Face3(12, 8, 4);
+
+				// Faces on the top-quad: 11 --3
+				//                        |    |
+				//                       15 -- 7
+				faces[pos++] = new THREE.Face3(15, 3, 11);
+				faces[pos++] = new THREE.Face3(7, 3, 15);
+			}
+			function add_edges()
+			{
+				var ln_mtrl = new THREE.LineBasicMaterial( { color: 0xffffff,linewidth: 5} );
+				var line;
+				// Edges on the side 0-5: 0---1---2---3
+				//                        |   |   |   |
+				//                        4---5---6---7
+				
+				var tobj = new THREE.Geometry();
+				for (i = 0; i < 4; i++) { 
+					tobj.vertices.push(verts[i]);
+				}
+				for (i = 7; i > 3; i--) { 
+					tobj.vertices.push(verts[i]);
+				}
+				tobj.vertices.push(verts[0]);
+				line = new THREE.Line( tobj, ln_mtrl );
+				mother_obj.add(line);
+				
+				//Connections
+				tobj = new THREE.Geometry();
+				tobj.vertices.push(verts[1]);
+				tobj.vertices.push(verts[5]);
+				line = new THREE.Line( tobj, ln_mtrl );
+				mother_obj.add(line);
+				
+				tobj = new THREE.Geometry();
+				tobj.vertices.push(verts[2]);
+				tobj.vertices.push(verts[6]);
+				line = new THREE.Line( tobj, ln_mtrl );
+				mother_obj.add(line);
+
+				// Reflected edges:  8---9--10--11
+				//                   |   |   |   |
+				//                  12--13--14--15
+				tobj = new THREE.Geometry();
+				for (i = 8; i < 12; i++) { 
+					tobj.vertices.push(verts[i]);
+				}
+				for (i = 15; i > 11; i--) { 
+					tobj.vertices.push(verts[i]);
+				}
+				tobj.vertices.push(verts[8]);
+				line = new THREE.Line( tobj, ln_mtrl );
+				mother_obj.add(line);
+				
+				//Connections
+				tobj = new THREE.Geometry();
+				tobj.vertices.push(verts[9]);
+				tobj.vertices.push(verts[13]);
+				line = new THREE.Line( tobj, ln_mtrl );
+				mother_obj.add(line);
+				
+				tobj = new THREE.Geometry();
+				tobj.vertices.push(verts[10]);
+				tobj.vertices.push(verts[14]);
+				line = new THREE.Line( tobj, ln_mtrl );
+				mother_obj.add(line);
+
+				// Joining  0--1---2---3
+				//          |  |   |   |
+				//          8--9--10--11
+				//and
+				// Joining  4---5---6---7
+				//          |   |   |   |
+				//         12--13--14--15
+				for (i = 0; i < 8; ++i){
+					tobj = new THREE.Geometry();
+					tobj.vertices.push(verts[i]);
+					tobj.vertices.push(verts[i+8]);
+					line = new THREE.Line( tobj, ln_mtrl );
+					mother_obj.add(line);
+				}
+			}
+			function create_geom(){
+				mother_obj = new THREE.Object3D();
+				// (*****) Add the solid object mesh to mother_obj
+				// geometry
+				var geometry = new THREE.Geometry();
+				// vertices
+				for (i = 0; i < 16; i++) { 
+					geometry.vertices.push(verts[i]);
+				}
+				// faces
+				for (i = 0; i < 28; i++) { 
+					geometry.faces.push(faces[i]);
+				}
+				//geometry.computeFaceNormals();
+				//geometry.computeVertexNormals();   
+				//geometry = new THREE.BufferGeometry().fromGeometry(geometry)
+				mesh= new THREE.Mesh( geometry, new THREE.MeshBasicMaterial( { color: 0x888888 } ) );
+				mother_obj.add(mesh);
+				var scl = 5e-1;
+				mother_obj.scale.set(scl,scl,scl);
+				
+				// (*****) This adds the lines to mother_obj
+				add_edges();
+				
+				
+			}
+			function update_geom(){
+				var nw_vrtz = new Array(16);
+				for (i = 0; i < 16; i++) { 
+					var z = options.m1* verts[i].x + options.m2* verts[i].y + options.m3* verts[i].z
+					nw_vrtz[i] = new THREE.Vector3(verts[i].x,verts[i].y,z)
+				}
+				// Solid object
+				for (i = 0; i < 16; i++) { 
+					mother_obj.children[0].geometry.vertices[i] = nw_vrtz[i]
+				}			
+				// Edges on the side 0-5: 0---1---2---3
+				//                        |   |   |   |
+				//                        4---5---6---7		
+				var cntr = 0;
+				for (i = 0; i < 4; i++) { 
+					mother_obj.children[1].geometry.vertices[cntr] = nw_vrtz[i];
+					cntr++;
+				}
+				for (i = 7; i > 3; i--) {
+					mother_obj.children[1].geometry.vertices[cntr] = nw_vrtz[i];
+					cntr++;
+				}
+				mother_obj.children[1].geometry.vertices[cntr] = nw_vrtz[0];		
+				//Connections
+				mother_obj.children[2].geometry.vertices[0] = nw_vrtz[1];
+				mother_obj.children[2].geometry.vertices[1] = nw_vrtz[5];	
+				mother_obj.children[3].geometry.vertices[0] = nw_vrtz[2];
+				mother_obj.children[3].geometry.vertices[1] = nw_vrtz[6];
+				// Reflected edges:  8---9--10--11
+				//                   |   |   |   |
+				//                  12--13--14--15
+				cntr = 0;
+				for (i = 8; i < 12; i++) { 
+					mother_obj.children[4].geometry.vertices[cntr] = nw_vrtz[i];
+					cntr++;
+				}
+				for (i = 15; i > 11; i--) {
+					mother_obj.children[4].geometry.vertices[cntr] = nw_vrtz[i];
+					cntr++;
+				}
+				mother_obj.children[4].geometry.vertices[cntr] = nw_vrtz[8];
+				//Connections
+				mother_obj.children[5].geometry.vertices[0] = nw_vrtz[9];
+				mother_obj.children[5].geometry.vertices[1] = nw_vrtz[13];	
+				mother_obj.children[6].geometry.vertices[0] = nw_vrtz[10];
+				mother_obj.children[6].geometry.vertices[1] = nw_vrtz[14];
+				// Joining  0--1---2---3
+				//          |  |   |   |
+				//          8--9--10--11
+				//and
+				// Joining  4---5---6---7
+				//          |   |   |   |
+				//         12--13--14--15
+				for (i = 0; i < 8; ++i){
+					mother_obj.children[i+7].geometry.vertices[0] = nw_vrtz[i];
+					mother_obj.children[i+7].geometry.vertices[1] = nw_vrtz[i+8];
+				}			
+				//Enable vertex updates
+				for (i = 0; i < mother_obj.children.length; i++){
+					mother_obj.children[i].geometry.verticesNeedUpdate = true;
+					mother_obj.children[i].geometry.elementsNeedUpdate = true;
+				}
+				
+				
+			}
+			function init() 
+			{
+				// camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 1000 );
+				var aspect = window.innerWidth / (window.innerHeight -100);
+				var frustumSize = 1000;
+				camera = new THREE.OrthographicCamera( frustumSize * aspect / - 2, frustumSize * aspect / 2, frustumSize / 2, frustumSize / - 2, 1, 2000 );
+				camera.position.z = 1200;
+
+				scene = new THREE.Scene();
+				
+				create_geom();
+				// (*****) Add mother_obj to scene
+				scene.add(mother_obj);
+					
+				renderer = new THREE.WebGLRenderer( { antialias: true } );
+				renderer.setPixelRatio( window.devicePixelRatio );
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				//document.body.appendChild( renderer.domElement );
+				container.appendChild( renderer.domElement );
+				//window.addEventListener( 'resize', onWindowResize, false );
+
+			}
+			function onWindowResize() 
+			{
+
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+
+				renderer.setSize( window.innerWidth, window.innerHeight );
+
+			}
+			function animate() 
+			{
+				requestAnimationFrame( animate );
+				if(!options.hlt){
+					//mother_obj.rotation.x += 0.001;
+					mother_obj.rotation.y += 0.009;
+				}
+				
+
+				renderer.render( scene, camera );
+			}
+			function on_slider_change () {
+				//
+				update_geom();
+				}
+			
+			generate_verts();
+			initialize_faces();
+			init();
+			animate();
+			paramz.__controllers[0].onChange(on_slider_change);
+			paramz.__controllers[1].onChange(on_slider_change);
+			paramz.__controllers[2].onChange(on_slider_change);
+			
+
+			</script>
+
+		</body>
+		</html>
